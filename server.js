@@ -1,4 +1,3 @@
-
 const express = require('express')
 const path = require('path')
 const engine = require('ejs-locals')
@@ -8,7 +7,8 @@ const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const logger = require('morgan')
 const errorHandler = require('errorhandler')
-const {port} = require('./config')
+const { port } = require('./config')
+const ctr = require('./controllers/todo')
 
 const app = express()
 
@@ -25,11 +25,11 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
 // Routes
-app.get('/', (req, res) => { res.send('/') })
-app.post('/create', (req, res) => { res.send('/create') })
-app.get('/destroy/:id', (req, res) => { res.send('/destroy/:id') })
-app.get('/edit/:id', (req, res) => { res.send('/edit/:id') })
-app.post('/update/:id', (req, res) => { res.send('/update/:id') })
+app.get('/', ctr.index)
+app.post('/create', ctr.create)
+app.get('/destroy/:id', ctr.destroy)
+app.get('/edit/:id', ctr.edit)
+app.post('/update/:id', ctr.update)
 
 if (app.get('env') == 'development') {
   app.use(errorHandler())
